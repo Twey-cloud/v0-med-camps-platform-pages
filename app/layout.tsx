@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
 import { Sidebar } from "@/components/sidebar"
+import { MobileBlocker } from "@/components/MobileBlocker"
 
 export const metadata: Metadata = {
   title: "MedCamps - GAMSAT Preparation Platform",
@@ -29,6 +30,7 @@ html {
         `}</style>
       </head>
       <body>
+        <MobileBlocker />
         <div className="flex h-screen bg-gray-50">
           <Sidebar />
           <main className="flex-1 overflow-auto pt-16 md:pt-0">{children}</main>
