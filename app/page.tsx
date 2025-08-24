@@ -1,144 +1,255 @@
-import { Card, CardContent } from "@/components/ui/card"
+"use client"
+
+import type React from "react"
+
 import { Button } from "@/components/ui/button"
-import { Clock, Target, CheckCircle } from "lucide-react"
+import { Card } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Clock, Send, CheckCircle, Stethoscope, Heart, Zap } from "lucide-react"
+import { useState } from "react"
 
-export default function GAMSATPage() {
+export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  })
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Handle form submission
+    console.log("Form submitted:", formData)
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
+  }
+
   return (
-    <div className="p-4 md:p-8 bg-gray-50 min-h-screen max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="mb-6 md:mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-1 text-sm md:text-base">Your pre-med home</p>
-      </div>
-
-      {/* Welcome Staff Section */}
-      <div className="mb-6 md:mb-8">
-        <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-4 md:mb-6">Welcome back, John</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-          {/* Stats Cards */}
-          <div className="lg:col-span-1 space-y-3 md:space-y-4">
-            <Card className="bg-blue-100 border-blue-200">
-              <CardContent className="p-4 md:p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-blue-600 text-xs md:text-sm">Questions Completed</p>
-                    <p className="text-3xl md:text-4xl font-bold mt-1 text-blue-800">43</p>
-                  </div>
-                  <CheckCircle className="h-6 w-6 md:h-8 md:w-8 text-blue-500" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-blue-100 border-blue-200">
-              <CardContent className="p-4 md:p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-blue-600 text-xs md:text-sm">Practice Streak</p>
-                    <p className="text-3xl md:text-4xl font-bold mt-1 text-blue-800">57%</p>
-                  </div>
-                  <Target className="h-6 w-6 md:h-8 md:w-8 text-blue-500" />
-                </div>
-              </CardContent>
-            </Card>
+    <div className="min-h-screen bg-background">
+      {/* Header - preserved from original */}
+      <header
+        className="bg-[#028156] text-white px-6 relative py-5"
+        style={{
+          backgroundImage: `url('/medical-wallpaper.png')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="max-w-7xl mx-auto flex items-center justify-between relative z-10">
+          <div className="flex items-center">
+            <a href="/" className="hover:opacity-80 transition-opacity duration-200">
+              <img src="/medcamps-navbar-logo.svg" alt="MedCamps" className="h-16 w-auto" />
+            </a>
           </div>
 
-          {/* Video Section */}
-          <div className="lg:col-span-2">
-            <Card className="h-full">
-              <CardContent className="p-4 md:p-6">
-                <div className="aspect-video rounded-lg overflow-hidden mb-3 md:mb-4">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src="https://www.youtube.com/embed/r-bP9NLWPro?si=MnXFyNhLHXicblZx"
-                    title="YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                    className="w-full h-full"
+          <nav className="hidden md:flex items-center gap-8 font-semibold text-lg">
+            <a href="/about" className="opacity-60 hover:opacity-100 transition-opacity duration-200">
+              About Us
+            </a>
+            <a href="/contact" className="opacity-100 transition-opacity duration-200">
+              Contact Us
+            </a>
+            <a href="/work-with-us" className="opacity-60 hover:opacity-100 transition-opacity duration-200">
+              Work with us
+            </a>
+          </nav>
+
+          <div className="flex items-center gap-4">
+            <Button className="bg-[#1696c4] hover:bg-[#1696c4]/90 text-white px-[29px] font-semibold text-base">
+              Sign in
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <section className="py-20 px-6 bg-background">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-black mb-6">
+            Get in Touch
+            <div className="w-24 h-1 bg-[#028156] mx-auto mt-4"></div>
+          </h1>
+          <p className="text-xl text-black max-w-2xl mx-auto leading-relaxed">
+            We're here to assist you with any inquiries about our medical education platform. Reach out to our team for
+            support, partnerships, or general questions.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-16 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div>
+            <Card className="bg-gray-50 p-8 shadow-lg border border-gray-200">
+              <h2 className="text-3xl font-bold text-black mb-6">Send us a Message</h2>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-black mb-2">
+                      Full Name
+                    </label>
+                    <Input
+                      id="name"
+                      name="name"
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="bg-white border-gray-300 focus:ring-[#1696c4] text-black"
+                      placeholder="Your full name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-black mb-2">
+                      Email Address
+                    </label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="bg-white border-gray-300 focus:ring-[#1696c4] text-black"
+                      placeholder="your.email@example.com"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-black mb-2">
+                    Subject
+                  </label>
+                  <Input
+                    id="subject"
+                    name="subject"
+                    type="text"
+                    required
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    className="bg-white border-gray-300 focus:ring-[#1696c4] text-black"
+                    placeholder="What's this about?"
                   />
                 </div>
-                <div className="flex items-center justify-between">
-                  <p className="text-xs md:text-sm text-gray-600 font-medium">MMI Masterclass Series</p>
-                  <p className="text-xs text-gray-500">6 Videos in total</p>
+
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-black mb-2">
+                    Message
+                  </label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows={6}
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    className="bg-white border-gray-300 focus:ring-[#1696c4] resize-none text-black"
+                    placeholder="Tell us more about your inquiry..."
+                  />
                 </div>
-              </CardContent>
+
+                <Button
+                  type="submit"
+                  className="w-full bg-[#1696c4] hover:bg-[#1696c4]/90 text-white py-3 text-lg font-semibold flex items-center justify-center gap-2"
+                >
+                  <Send className="w-5 h-5" />
+                  Send Message
+                </Button>
+              </form>
             </Card>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Questions Section */}
-      <div className="mb-6 md:mb-8">
-        <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-4 md:mb-6">Questions</h2>
-        <div className="space-y-3">
-          <Card className="hover:shadow-md transition-shadow">
-            <CardContent className="p-4 md:p-5">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                <div className="flex items-center space-x-3 md:space-x-4">
-                  <div className="w-3 h-3 bg-blue-400 rounded-full flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900 text-sm md:text-base">5345 Questions</span>
-                    <p className="text-xs md:text-sm text-gray-500 mt-1">Complete question bank</p>
-                  </div>
-                </div>
-                <Button className="bg-blue-400 hover:bg-blue-500 font-medium text-sm md:text-base px-4 py-2 w-full sm:w-auto">
-                  Continue Questions
-                </Button>
+      {/* Footer - preserved from original */}
+      <footer className="bg-[#028156] text-white px-6 py-[29px]">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-8 mb-12">
+            {/* Logo and Brand */}
+            <div className="md:col-span-2">
+              <div className="flex items-center mb-6">
+                <img src="/medcamps-navbar-logo.svg" alt="MedCamps" className="h-12 w-auto" />
               </div>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-md transition-shadow">
-            <CardContent className="p-4 md:p-5">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                <div className="flex items-center space-x-3 md:space-x-4">
-                  <div className="w-3 h-3 bg-blue-400 rounded-full flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900 text-sm md:text-base">Motivation</span>
-                    <p className="text-xs md:text-sm text-gray-500 mt-1">Motivational content and tips</p>
-                  </div>
+              <p className="text-white/80 mb-6 max-w-md">
+                The one-stop platform for pre-meds, pre-vets, and pre-dents. Comprehensive preparation for medical,
+                dental, and veterinary admissions across multiple countries.
+              </p>
+              <div className="flex items-center gap-4">
+                <div className="bg-white/10 p-2 rounded-lg">
+                  <Stethoscope className="w-5 h-5" />
                 </div>
-                <Button className="bg-blue-400 hover:bg-blue-500 font-medium text-sm md:text-base px-4 py-2 w-full sm:w-auto">
-                  Continue Learning
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-md transition-shadow">
-            <CardContent className="p-4 md:p-5">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                <div className="flex items-center space-x-3 md:space-x-4">
-                  <div className="w-3 h-3 bg-blue-400 rounded-full flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900 text-sm md:text-base">Recommended Questions</span>
-                    <p className="text-xs md:text-sm text-gray-500 mt-1">Personalized question recommendations</p>
-                  </div>
+                <div className="bg-white/10 p-2 rounded-lg">
+                  <Heart className="w-5 h-5" />
                 </div>
-                <Button className="bg-blue-400 hover:bg-blue-500 font-medium text-sm md:text-base px-4 py-2 w-full sm:w-auto">
-                  Start Questions
-                </Button>
+                <div className="bg-white/10 p-2 rounded-lg">
+                  <Zap className="w-5 h-5" />
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Event and News */}
-      <div>
-        <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-4 md:mb-6">Event and News</h2>
-        <Card>
-          <CardContent className="p-6 md:p-8 text-center">
-            <div className="text-gray-400 mb-4">
-              <Clock className="h-10 w-10 md:h-12 md:w-12 mx-auto mb-3" />
             </div>
-            <p className="text-gray-600 font-medium text-sm md:text-base">No upcoming events or news at this time.</p>
-            <p className="text-xs md:text-sm text-gray-500 mt-2">Check back later for updates and announcements.</p>
-          </CardContent>
-        </Card>
-      </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
+              <ul className="space-y-3 text-white/80">
+                <li>
+                  <a href="/about" className="hover:text-white transition-colors">
+                    About Us
+                  </a>
+                </li>
+                <li>
+                  <a href="/contact" className="hover:text-white transition-colors">
+                    Contact Us
+                  </a>
+                </li>
+                <li>
+                  <a href="/work-with-us" className="hover:text-white transition-colors">
+                    Work with us
+                  </a>
+                </li>
+                <li>
+                  <a href="/privacy" className="hover:text-white transition-colors">
+                    Privacy Policy
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Platforms */}
+            <div>
+              <h4 className="font-semibold text-lg mb-4">Our Platforms</h4>
+              <ul className="space-y-3 text-white/80">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-400" />
+                  <span>Interview Platform</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-yellow-400" />
+                  <span>UCAT (Coming Soon)</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-yellow-400" />
+                  <span>GAMSAT (Coming Soon)</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-white/60 text-sm">© 2024 MedCamps. All rights reserved.</p>
+            <div className="flex items-center gap-6 text-sm text-white/60">
+              <span>🇬🇧 UK</span>
+              <span>🇦🇺 Australia</span>
+              <span>🇺🇸 United States</span>
+              <span>🇨🇦 Canada</span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
