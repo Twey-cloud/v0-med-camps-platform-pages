@@ -20,8 +20,8 @@ const userScore = 85 // User's score position
 // Custom histogram component matching the design
 const CustomHistogram = () => {
   const maxUsers = Math.max(...histogramData.map((d) => d.users))
-  const chartWidth = 400
-  const chartHeight = 200
+  const chartWidth = 320 // Reduced chart width for mobile
+  const chartHeight = 160 // Reduced chart height for mobile
   const barWidth = chartWidth / histogramData.length
 
   // Function to get color based on percentage
@@ -36,8 +36,8 @@ const CustomHistogram = () => {
   }
 
   return (
-    <div className="w-full bg-gray-100 p-6 rounded-lg">
-      <div className="relative">
+    <div className="w-full bg-gray-100 p-3 md:p-6 rounded-lg overflow-x-auto">
+      <div className="relative min-w-[320px]">
         <svg width={chartWidth} height={chartHeight + 40} className="mx-auto">
           {/* Bars */}
           {histogramData.map((data, index) => {
@@ -75,7 +75,7 @@ const CustomHistogram = () => {
               x={index * barWidth + barWidth / 2}
               y={chartHeight + 20}
               textAnchor="middle"
-              fontSize="12"
+              fontSize="10"
               fill="#666"
             >
               {data.range}
@@ -88,7 +88,9 @@ const CustomHistogram = () => {
           className="absolute top-0 transform -translate-x-1/2 -translate-y-6"
           style={{ left: `${((userScore - 20) / 80) * 100}%` }}
         >
-          <span className="text-sm font-medium text-gray-700 bg-white px-2 py-1 rounded shadow">Your score</span>
+          <span className="text-xs md:text-sm font-medium text-gray-700 bg-white px-2 py-1 rounded shadow">
+            Your score
+          </span>
         </div>
       </div>
     </div>
@@ -159,72 +161,74 @@ const LineTooltip = ({ active, payload, label }: any) => {
 
 export default function PerformanceTrackerPage() {
   return (
-    <div className="pt-8 p-8 bg-gray-50 min-h-screen max-w-7xl mx-auto">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen max-w-7xl mx-auto">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Performance Tracker</h1>
-        <p className="text-gray-600 mt-2">Track your progress and performance across all sections</p>
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Performance Tracker</h1>
+        <p className="text-gray-600 mt-2 text-sm md:text-base">
+          Track your progress and performance across all sections
+        </p>
       </div>
 
       {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Questions</p>
-                <p className="text-2xl font-bold text-gray-900">1,247</p>
+          <CardContent className="p-3 md:p-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+              <div className="mb-2 md:mb-0">
+                <p className="text-xs md:text-sm text-gray-600">Total Questions</p>
+                <p className="text-lg md:text-2xl font-bold text-gray-900">1,247</p>
               </div>
-              <Target className="h-8 w-8 text-blue-400" />
+              <Target className="h-6 w-6 md:h-8 md:w-8 text-blue-400 self-end md:self-auto" />
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Average Score</p>
-                <p className="text-2xl font-bold text-blue-400">85%</p>
+          <CardContent className="p-3 md:p-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+              <div className="mb-2 md:mb-0">
+                <p className="text-xs md:text-sm text-gray-600">Average Score</p>
+                <p className="text-lg md:text-2xl font-bold text-blue-400">85%</p>
               </div>
-              <Award className="h-8 w-8 text-blue-400" />
+              <Award className="h-6 w-6 md:h-8 md:w-8 text-blue-400 self-end md:self-auto" />
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Study Time</p>
-                <p className="text-2xl font-bold text-gray-900">127h</p>
+          <CardContent className="p-3 md:p-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+              <div className="mb-2 md:mb-0">
+                <p className="text-xs md:text-sm text-gray-600">Study Time</p>
+                <p className="text-lg md:text-2xl font-bold text-gray-900">127h</p>
               </div>
-              <Clock className="h-8 w-8 text-blue-400" />
+              <Clock className="h-6 w-6 md:h-8 md:w-8 text-blue-400 self-end md:self-auto" />
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Improvement</p>
-                <p className="text-2xl font-bold text-blue-400">+22%</p>
+          <CardContent className="p-3 md:p-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+              <div className="mb-2 md:mb-0">
+                <p className="text-xs md:text-sm text-gray-600">Improvement</p>
+                <p className="text-lg md:text-2xl font-bold text-blue-400">+22%</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-blue-400" />
+              <TrendingUp className="h-6 w-6 md:h-8 md:w-8 text-blue-400 self-end md:self-auto" />
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-6 md:mb-8">
         {/* Custom Histogram */}
         <Card>
-          <CardHeader>
-            <CardTitle>Your Performance vs Other Users</CardTitle>
-            <p className="text-sm text-gray-600">See how you compare to other students</p>
+          <CardHeader className="p-4 md:p-6">
+            <CardTitle className="text-base md:text-lg">Your Performance vs Other Users</CardTitle>
+            <p className="text-xs md:text-sm text-gray-600">See how you compare to other students</p>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4 md:p-6 pt-0">
             <CustomHistogram />
-            <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
-              <p className="text-sm text-green-800 font-medium">
+            <div className="mt-3 md:mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
+              <p className="text-xs md:text-sm text-green-800 font-medium">
                 🎉 You're in the top 15% of all users! Keep up the excellent work.
               </p>
             </div>
@@ -233,26 +237,26 @@ export default function PerformanceTrackerPage() {
 
         {/* Category Performance List */}
         <Card>
-          <CardHeader>
-            <CardTitle>Category Performance</CardTitle>
-            <p className="text-sm text-gray-600">Your scores by category (highest to lowest)</p>
+          <CardHeader className="p-4 md:p-6">
+            <CardTitle className="text-base md:text-lg">Category Performance</CardTitle>
+            <p className="text-xs md:text-sm text-gray-600">Your scores by category (highest to lowest)</p>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
+          <CardContent className="p-4 md:p-6 pt-0">
+            <div className="space-y-2 md:space-y-3">
               {categoryPerformance.map((category, index) => (
                 <div
                   key={category.category}
-                  className={`flex items-center justify-between p-4 rounded-lg ${category.bgColor} border`}
+                  className={`flex items-center justify-between p-3 md:p-4 rounded-lg ${category.bgColor} border`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full text-sm font-semibold text-gray-700">
+                  <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+                    <div className="flex items-center justify-center w-6 h-6 md:w-8 md:h-8 bg-white rounded-full text-xs md:text-sm font-semibold text-gray-700 flex-shrink-0">
                       {index + 1}
                     </div>
-                    <span className="font-medium text-gray-900">{category.category}</span>
+                    <span className="font-medium text-gray-900 text-sm md:text-base truncate">{category.category}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-lg font-bold ${category.color}`}>{category.percentage}%</span>
-                    <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span className={`text-sm md:text-lg font-bold ${category.color}`}>{category.percentage}%</span>
+                    <div className="w-12 md:w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div
                         className={`h-full ${
                           category.percentage >= 80
@@ -268,20 +272,20 @@ export default function PerformanceTrackerPage() {
                 </div>
               ))}
             </div>
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-              <h4 className="font-semibold text-gray-900 mb-2">Performance Guide:</h4>
-              <div className="flex flex-wrap gap-4 text-sm">
+            <div className="mt-4 md:mt-6 p-3 md:p-4 bg-gray-50 rounded-lg">
+              <h4 className="font-semibold text-gray-900 mb-2 text-sm md:text-base">Performance Guide:</h4>
+              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-xs md:text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
                   <span className="text-gray-600">Excellent (80%+)</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full flex-shrink-0"></div>
                   <span className="text-gray-600">Good (70-79%)</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <span className="text-gray-600">Needs Improvement (less than 70%)</span>
+                  <div className="w-3 h-3 bg-red-500 rounded-full flex-shrink-0"></div>
+                  <span className="text-gray-600">Needs Improvement (&lt;70%)</span>
                 </div>
               </div>
             </div>

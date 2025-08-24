@@ -180,21 +180,23 @@ export default function PracticeQuestionsPage() {
     activeCategory === "All Topics" ? allQuestionSets : questionSetsByCategory[activeCategory] || []
 
   return (
-    <div className="pt-8 p-8 bg-gray-50 min-h-screen max-w-7xl mx-auto">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen max-w-7xl mx-auto">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Practice Questions</h1>
-        <p className="text-gray-600 mt-2">MMI interview scenarios to prepare for UK medical school admissions</p>
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Practice Questions</h1>
+        <p className="text-gray-600 mt-2 text-sm md:text-base">
+          MMI interview scenarios to prepare for UK medical school admissions
+        </p>
       </div>
 
       {/* Category Filter */}
-      <div className="mb-8">
+      <div className="mb-6 md:mb-8">
         <div className="flex flex-wrap gap-2">
           {categories.map((category) => (
             <Badge
               key={category.name}
               variant={category.active ? "default" : "secondary"}
-              className={`px-4 py-2 text-sm font-medium cursor-pointer transition-colors ${
+              className={`px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium cursor-pointer transition-colors ${
                 category.active
                   ? "bg-emerald-600 hover:bg-emerald-700 text-white"
                   : "bg-white hover:bg-gray-100 text-gray-700 border"
@@ -207,13 +209,13 @@ export default function PracticeQuestionsPage() {
       </div>
 
       {/* Question Sets Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {displayQuestions.map((set) => (
           <Card key={set.id} className="hover:shadow-lg transition-shadow duration-200">
-            <CardContent className="p-6">
+            <CardContent className="p-4 md:p-6">
               {/* Header with Badge */}
-              <div className="flex items-center justify-between mb-4">
-                <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100">MMI Practice</Badge>
+              <div className="flex items-center justify-between mb-3 md:mb-4">
+                <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 text-xs">MMI Practice</Badge>
                 <Badge variant="outline" className="text-xs">
                   {set.category}
                 </Badge>
@@ -221,25 +223,25 @@ export default function PracticeQuestionsPage() {
 
               {/* Description */}
               <div className="mb-4">
-                <h3 className="font-semibold text-gray-900 mb-2">{set.title}</h3>
-                <p className="text-sm text-gray-600 mb-3 line-clamp-3">{set.description}</p>
+                <h3 className="font-semibold text-gray-900 mb-2 text-sm md:text-base leading-tight">{set.title}</h3>
+                <p className="text-xs md:text-sm text-gray-600 mb-3 line-clamp-3 leading-relaxed">{set.description}</p>
 
                 {/* Stats */}
-                <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
+                <div className="flex items-center gap-3 md:gap-4 text-xs text-gray-500 mb-3 md:mb-4">
                   <div className="flex items-center gap-1">
-                    <FileQuestion className="h-3 w-3" />
+                    <FileQuestion className="h-3 w-3 flex-shrink-0" />
                     <span>{set.questions} scenarios</span>
                   </div>
                   <span>•</span>
                   <div className="flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
+                    <Clock className="h-3 w-3 flex-shrink-0" />
                     <span>{set.duration}</span>
                   </div>
                 </div>
 
                 {/* Progress Bar (only show if progress > 0) */}
                 {set.progress > 0 && (
-                  <div className="mb-4">
+                  <div className="mb-3 md:mb-4">
                     <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
                       <span>Progress</span>
                       <span>{set.progress}%</span>
@@ -257,14 +259,14 @@ export default function PracticeQuestionsPage() {
               {/* Action Button */}
               {set.id === 1 ? (
                 <Link href="/practice/valid-consent">
-                  <Button className="w-full bg-blue-400 hover:bg-blue-500 font-medium">
-                    <Play className="h-4 w-4 mr-2" />
+                  <Button className="w-full bg-blue-400 hover:bg-blue-500 font-medium text-sm md:text-base py-2 md:py-2.5">
+                    <Play className="h-3 w-3 md:h-4 md:w-4 mr-2" />
                     Start
                   </Button>
                 </Link>
               ) : (
-                <Button className="w-full bg-blue-400 hover:bg-blue-500 font-medium">
-                  <Play className="h-4 w-4 mr-2" />
+                <Button className="w-full bg-blue-400 hover:bg-blue-500 font-medium text-sm md:text-base py-2 md:py-2.5">
+                  <Play className="h-3 w-3 md:h-4 md:w-4 mr-2" />
                   Start
                 </Button>
               )}
@@ -274,23 +276,23 @@ export default function PracticeQuestionsPage() {
       </div>
 
       {/* Stats Summary */}
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         <Card>
-          <CardContent className="p-6 text-center">
-            <div className="text-3xl font-bold text-emerald-600 mb-2">47</div>
-            <p className="text-sm text-gray-600">Scenarios Completed</p>
+          <CardContent className="p-4 md:p-6 text-center">
+            <div className="text-2xl md:text-3xl font-bold text-emerald-600 mb-2">47</div>
+            <p className="text-xs md:text-sm text-gray-600">Scenarios Completed</p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6 text-center">
-            <div className="text-3xl font-bold text-blue-400 mb-2">85%</div>
-            <p className="text-sm text-gray-600">Average Performance</p>
+          <CardContent className="p-4 md:p-6 text-center">
+            <div className="text-2xl md:text-3xl font-bold text-blue-400 mb-2">85%</div>
+            <p className="text-xs md:text-sm text-gray-600">Average Performance</p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6 text-center">
-            <div className="text-3xl font-bold text-purple-600 mb-2">6</div>
-            <p className="text-sm text-gray-600">Practice Sets Completed</p>
+          <CardContent className="p-4 md:p-6 text-center">
+            <div className="text-2xl md:text-3xl font-bold text-purple-600 mb-2">6</div>
+            <p className="text-xs md:text-sm text-gray-600">Practice Sets Completed</p>
           </CardContent>
         </Card>
       </div>
