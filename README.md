@@ -1,258 +1,220 @@
-# MedCamps Platform - Admin & Content Management Architecture
+# MedCamps Platform - Medical Interview Preparation System
 
-## 🚀 Recent Developments & Project Status
+A comprehensive Next.js application for UK medical school interview preparation, featuring learning materials, practice questions, and mock interview simulations.
 
-### Phase 1 Refactoring Complete ✅
-The admin dashboard has been successfully refactored from a 1,300+ line monolith into a modular, performance-optimized system:
+## Project Overview
 
-- **92% file size reduction** in main admin page (1,300+ → 100 lines)
-- **Component extraction**: 4 major admin components created with lazy loading
-- **Shared components**: Reusable AdminTable, AdminForm, and AdminHeader components
-- **Performance optimizations**: React.memo(), Suspense boundaries, and code splitting implemented
-- **Vercel Speed Insights**: Integrated for performance monitoring and optimization tracking
+MedCamps is a full-stack educational platform built with Next.js 15, TypeScript, and Tailwind CSS. The platform provides structured learning paths, interactive practice sessions, and comprehensive mock interview experiences for medical school candidates.
 
-### Navigation & UX Improvements
-- **Streamlined learning navigation**: Removed redundant intermediate pages
-- **Direct routing**: Learning notes now navigate directly back to main learning page
-- **Redirect handling**: Legacy category pages automatically redirect to prevent 404s
+## Design System
 
-### Documentation & Planning
-- **Comprehensive refactoring documentation**: Detailed sub-task tracking and progress monitoring
-- **API endpoint planning**: Identified required backend APIs for smooth handoff
-- **Performance baseline**: Vercel deployment with Speed Insights for optimization tracking
+### Color Theme
+The platform uses an **emerald green** color scheme (`emerald-800`, `emerald-700`, `emerald-900`) as the primary brand color, creating a professional medical aesthetic. The design system includes:
 
-### Current Architecture Status
-- **Frontend refactoring**: Phase 1 complete, ready for Phase 2 (Mock Interview system)
-- **Component structure**: Clean separation between UI and business logic
-- **Backend readiness**: Clear API requirements documented for implementation
+- **Primary**: Emerald green variants for navigation and key actions
+- **Secondary**: Slate grays for text and subtle elements  
+- **Accent**: Blue for interactive elements and progress indicators
+- **Status Colors**: Green (success), amber (warning), red (error) for psychological impact
 
-## Overview
+### shadcn/ui Integration
+Built on shadcn/ui component library with custom theming:
+- Consistent component patterns across all interfaces
+- Accessible design with proper ARIA labels and keyboard navigation
+- Responsive breakpoints with mobile-first approach
+- Performance-optimized with React.memo() and lazy loading
 
-The MedCamps platform uses a hierarchical content management system that supports three main content types: Learning Materials, Practice Questions, and Mock Interviews. This document outlines the structure, relationships, and mapping between the admin interface and user-facing pages.
+## Project Structure
 
-## Content Hierarchy Structure
+### Core Application Files
 
-### 1. Learning Materials (3 Levels)
-
-**Level 0: Categories**
-- Unified categories shared across all content types
-- Examples: Motivation, Communication, Ethics, Teamwork, Problem Solving, Empathy, Leadership
-- Admin Path: `/admin` → Learning Tab → Categories View
-- User Path: `/learning` (collapsible category list)
-
-**Level 1: Topics**
-- Specific learning topics within each category
-- Examples: "Why Medicine and Not Nursing?", "Breaking Bad News", "Patient Communication"
-- Admin Path: `/admin` → Learning Tab → Select Category → Topics View
-- User Path: `/learning` → Expand Category → Topic List
-
-**Level 2: Notes & Content**
-- Individual note pages with rich text content and video
-- Contains: Title, Rich Text Content, Video URL, Status
-- Admin Path: `/admin` → Learning Tab → Select Category → Select Topic → Content Editor
-- User Path: `/learning/[category]/[topic-slug]` → Individual note page
-
-### 2. Practice Questions (3 Levels)
-
-**Level 0: Categories**
-- Same unified categories as Learning Materials
-- Ensures consistency across content types
-- Admin Path: `/admin` → Practice Tab → Categories View
-- User Path: `/practice` (category filter badges)
-
-**Level 1: Question Titles**
-- Individual practice question sets within each category
-- Examples: "Valid Consent & Patient Autonomy", "Breaking Bad News Scenarios"
-- Admin Path: `/admin` → Practice Tab → Select Category → Questions View
-- User Path: `/practice` → Filter by Category → Question Cards
-
-**Level 2: Question Content & Marking Criteria**
-- Question text, scenarios, and detailed marking criteria
-- Contains: Question Text, Marking Criteria (JSON), Duration, Status
-- Admin Path: `/admin` → Practice Tab → Select Category → Select Question → Details Editor
-- User Path: `/practice/[question-slug]` → Question interface with marking
-
-### 3. Mock Interviews (4 Levels)
-
-**Level 0: Mock Interview Sets**
-- Top-level mock interview collections (Mock 1, Mock 2, Mock 3)
-- Each contains 7 stations covering different competencies
-- Admin Path: `/admin` → Mock Tab → Interviews View
-- User Path: `/mock-interview` → Mock Interview Cards
-
-**Level 1: Categories**
-- Competency-based categories within each mock interview
-- Novel questions NOT shared with practice questions
-- Examples: "Medical Ethics", "Communication Skills", "Problem Solving"
-- Admin Path: `/admin` → Mock Tab → Select Mock → Categories View
-- User Path: Internal navigation within mock interview flow
-
-**Level 2: Question Titles**
-- Individual station questions within each category
-- Examples: "Informed Consent in Emergency", "Delivering Unexpected Diagnosis"
-- Admin Path: `/admin` → Mock Tab → Select Mock → Select Category → Questions View
-- User Path: `/mock-interview/[mock-id]/station/[station-number]`
-
-**Level 3: Question Details**
-- Complete question scenarios with marking criteria and timing
-- Contains: Question Text, Marking Criteria (JSON), Time Limit, Competency, Status
-- Admin Path: `/admin` → Mock Tab → Select Mock → Select Category → Select Question → Details Editor
-- User Path: Individual station interface during mock interview
-
-## Data Relationships
-
-### Unified Categories
 \`\`\`
-Categories (shared across all content types)
-├── Learning Topics
-├── Practice Questions  
-└── Mock Interview Categories (per mock)
+app/
+├── layout.tsx                    # Root layout with sidebar and mobile blocker
+├── page.tsx                      # Dashboard with quick actions and video content
+├── globals.css                   # Global styles and Tailwind configuration
+├── admin/
+│   ├── page.tsx                  # Admin dashboard hub (100 lines, refactored)
+│   └── components/
+│       ├── AdminOverview.tsx     # Statistics and metrics dashboard
+│       ├── AdminLearningManagement.tsx    # Learning content CRUD
+│       ├── AdminPracticeManagement.tsx    # Practice questions CRUD
+│       ├── AdminMockInterviewManagement.tsx # Mock interview CRUD
+│       └── shared/
+│           ├── AdminTable.tsx    # Reusable data table component
+│           ├── AdminForm.tsx     # Dynamic form generator
+│           └── AdminHeader.tsx   # Consistent admin page headers
+├── learning/
+│   ├── page.tsx                  # Learning categories with collapsible topics
+│   └── motivation/
+│       └── why-medicine-not-nursing/
+│           └── page.tsx          # Individual learning note with rich content
+├── practice/
+│   ├── page.tsx                  # Practice question categories and filters
+│   └── valid-consent/
+│       └── page.tsx              # Practice question interface (120 lines, refactored)
+├── mock-interview/
+│   ├── page.tsx                  # Mock interview selection cards
+│   └── mock-1/
+│       └── page.tsx              # Mock interview flow (120 lines, refactored)
+├── performance/
+│   └── page.tsx                  # Performance analytics with custom histogram
+└── profile/
+    └── page.tsx                  # User profile and settings
 \`\`\`
 
-### Content Mapping
+### Component Architecture
+
 \`\`\`
-Learning: Category → Topic → Note Content
-Practice: Category → Question → Question Details
-Mock: Mock Set → Category → Question → Question Details
-\`\`\`
-
-## Admin Interface Navigation Flow
-
-### Learning Management
-1. **Categories List** → View all unified categories
-2. **Topics List** → View topics within selected category
-3. **Content Editor** → Edit individual note content and media
-
-### Practice Management
-1. **Categories List** → View unified categories with question counts
-2. **Questions List** → View questions within selected category
-3. **Details Editor** → Edit question text and marking criteria
-
-### Mock Interview Management
-1. **Mock Sets List** → View all mock interview collections
-2. **Categories List** → View competency categories within selected mock
-3. **Questions List** → View station questions within selected category
-4. **Details Editor** → Edit complete station details and criteria
-
-## User Interface Mapping
-
-### Learning Page (`/learning`)
-- Displays collapsible category list
-- Each category expands to show topics
-- Topics link to individual note pages
-- Completion tracking and progress bars
-
-### Practice Page (`/practice`)
-- Category filter badges at top
-- Question cards grouped by category
-- Each card links to question interface
-- Progress tracking per question set
-
-### Mock Interview Page (`/mock-interview`)
-- Mock interview selection cards
-- Each mock shows competencies and difficulty
-- Links to complete mock interview flow
-- Station-by-station progression
-
-## Technical Implementation Notes
-
-### Database Schema Considerations
-
-**Categories Table**
-\`\`\`sql
-categories (
-  id, name, description, status, created_at, updated_at
-)
+components/
+├── sidebar.tsx                   # Responsive navigation with mobile hamburger menu
+├── MobileBlocker.tsx            # Desktop-only access enforcement
+├── shared/                      # Cross-platform reusable components
+│   ├── BackButton.tsx           # Consistent navigation back buttons
+│   ├── PageHeader.tsx           # Standardized page headers with actions
+│   ├── SectionNavigation.tsx    # Sequential content navigation
+│   ├── FormField.tsx            # Unified form input handling
+│   ├── ContactForm.tsx          # Reusable contact dialog system
+│   ├── FormContainer.tsx        # Consistent form wrapper styling
+│   ├── StatusBadge.tsx          # Color-coded status indicators
+│   ├── ProgressDisplay.tsx      # Progress bars and completion tracking
+│   ├── ScoreDisplay.tsx         # Score visualization with color psychology
+│   ├── CompletionIndicator.tsx  # Task completion states
+│   ├── PageLayout.tsx           # Standard page container patterns
+│   ├── GridContainer.tsx        # Responsive grid layout system
+│   ├── FlexContainer.tsx        # Flexible layout containers
+│   ├── Section.tsx              # Content grouping with consistent spacing
+│   ├── ActionButton.tsx         # Interactive buttons with loading states
+│   ├── InteractiveCard.tsx      # Collapsible content cards
+│   ├── LoadingState.tsx         # Unified loading indicators
+│   └── ContentCard.tsx          # Multi-purpose content display cards
+├── practice/
+│   ├── QuestionInterface.tsx    # Question display with timer integration
+│   ├── SelfAssessment.tsx       # Marking criteria and score calculation
+│   └── AIFeedback.tsx           # AI-powered response analysis
+├── mock-interview/
+│   ├── InterviewStation.tsx     # Individual station interface
+│   ├── InstructionsScreen.tsx   # Pre-interview setup and instructions
+│   ├── SetupScreen.tsx          # Interview configuration
+│   ├── AssessmentPanel.tsx      # Real-time marking and evaluation
+│   └── ReviewScreen.tsx         # Post-interview performance review
+├── learning/
+│   └── LearningNote.tsx         # Rich text content with video integration
+└── ui/                          # shadcn/ui base components
+    ├── button.tsx               # Base button component
+    ├── card.tsx                 # Base card component
+    ├── form.tsx                 # Form handling utilities
+    ├── input.tsx                # Input field components
+    ├── select.tsx               # Dropdown selection components
+    ├── badge.tsx                # Status and category badges
+    ├── progress.tsx             # Progress bar components
+    ├── chart.tsx                # Chart and visualization components
+    └── breadcrumb.tsx           # Navigation breadcrumb component
 \`\`\`
 
-**Learning Topics Table**
-\`\`\`sql
-learning_topics (
-  id, category_id, title, content, video_url, status, order, created_at, updated_at
-)
+### Service Layer
+
+\`\`\`
+services/
+├── mockInterviewService.ts      # Mock interview business logic and state management
+└── practiceSessionService.ts    # Practice session workflow and data handling
 \`\`\`
 
-**Practice Questions Table**
-\`\`\`sql
-practice_questions (
-  id, category_id, title, question_text, marking_criteria_json, 
-  duration_minutes, status, created_at, updated_at
-)
+### Utility Functions
+
+\`\`\`
+hooks/
+└── useTimer.tsx                 # Reusable timer hook with pause/resume functionality
+
+lib/
+└── utils.ts                     # Utility functions including cn() for class merging
 \`\`\`
 
-**Mock Interviews Table**
-\`\`\`sql
-mock_interviews (
-  id, title, description, stations_count, status, created_at, updated_at
-)
+### Documentation
+
+\`\`\`
+docs/
+├── refactoring-plan.md          # Complete refactoring progress and phase tracking
+├── api-documentation.md         # Comprehensive API endpoint specifications
+└── backend-implementation-guide.md # Technical implementation roadmap
 \`\`\`
 
-**Mock Categories Table**
-\`\`\`sql
-mock_categories (
-  id, mock_interview_id, name, description, question_count, status, created_at, updated_at
-)
-\`\`\`
+## Technical Architecture
 
-**Mock Questions Table**
-\`\`\`sql
-mock_questions (
-  id, mock_category_id, title, question_text, marking_criteria_json,
-  time_limit_minutes, competency, status, created_at, updated_at
-)
-\`\`\`
+### Frontend Framework
+- **Next.js 15** with App Router for file-based routing and server components
+- **TypeScript** for type safety and developer experience
+- **Tailwind CSS v4** for utility-first styling and responsive design
+- **React 19** with concurrent features and performance optimizations
 
-### API Endpoints Structure
+### Performance Optimizations
+- **Code Splitting**: Lazy loading for admin components and large interfaces
+- **React.memo()**: Memoization for expensive components and calculations
+- **Suspense Boundaries**: Loading states for async component imports
+- **Vercel Speed Insights**: Real-time performance monitoring and optimization tracking
 
-**Learning Endpoints**
-- `GET /api/learning/categories` - List all categories
-- `GET /api/learning/categories/{id}/topics` - Topics in category
-- `GET /api/learning/topics/{id}` - Individual topic content
-- `POST/PUT/DELETE /api/admin/learning/*` - Admin CRUD operations
+### State Management
+- **Service Layer Pattern**: Centralized business logic in service classes
+- **React Hooks**: Local state management with useState and useEffect
+- **Singleton Services**: Consistent state across component instances
 
-**Practice Endpoints**
-- `GET /api/practice/categories` - Categories with question counts
-- `GET /api/practice/categories/{id}/questions` - Questions in category
-- `GET /api/practice/questions/{id}` - Question details and criteria
-- `POST/PUT/DELETE /api/admin/practice/*` - Admin CRUD operations
+### Responsive Design
+- **Mobile Blocker**: Desktop-only access with informational screen for mobile users
+- **Breakpoint Strategy**: lg+ (1024px) for full functionality, below shows access restriction
+- **Touch Targets**: Optimized button sizes and spacing for desktop interaction
 
-**Mock Interview Endpoints**
-- `GET /api/mock-interviews` - List all mock interview sets
-- `GET /api/mock-interviews/{id}/categories` - Categories in mock
-- `GET /api/mock-interviews/{mockId}/categories/{catId}/questions` - Questions in category
-- `GET /api/mock-interviews/questions/{id}` - Question details
-- `POST/PUT/DELETE /api/admin/mock-interviews/*` - Admin CRUD operations
+### Component Patterns
+- **Compound Components**: Complex interfaces broken into focused sub-components
+- **Render Props**: Flexible component composition for reusable logic
+- **Custom Hooks**: Shared stateful logic like timer management and form handling
 
-### Content Status Management
-- **Active**: Published and visible to users
-- **Draft**: Work in progress, admin-only visibility
-- **Archived**: Hidden from users but preserved
+## Content Management System
 
-### Key Design Principles
-1. **Unified Categories**: Same categories across Learning and Practice for consistency
-2. **Novel Mock Content**: Mock interview questions are unique, not reused from practice
-3. **Hierarchical Navigation**: Clear breadcrumb navigation in admin interface
-4. **Progressive Disclosure**: Users see appropriate level of detail at each stage
-5. **Consistent Patterns**: Similar UI patterns across all content types
+### Hierarchical Structure
+The platform uses a 3-4 level content hierarchy:
 
-## Future Considerations
-- User progress tracking across all content types
-- Advanced filtering and search capabilities
-- Content versioning and revision history
-- Bulk import/export functionality
-- Analytics and usage reporting
+**Learning Materials**: Categories → Topics → Rich Content
+**Practice Questions**: Categories → Questions → Marking Criteria  
+**Mock Interviews**: Mock Sets → Categories → Questions → Station Details
 
-## ⚠️ Next Steps for Backend Implementation
+### Admin Interface
+Fully refactored admin system with:
+- **92% file size reduction** from original monolithic structure
+- **Component extraction** with lazy loading and performance optimization
+- **Shared components** for consistent CRUD operations across content types
+- **Real-time preview** and content management workflows
 
-### Immediate Priorities:
-1. **API Development**: Implement the documented API endpoints for each extracted component
-2. **Database Schema**: Create tables based on the documented structure
-3. **Performance Testing**: Use Vercel Speed Insights data to optimize API response times
-4. **Phase 2 Refactoring**: Continue with mock interview system optimization
+### Data Flow
+- **Service Layer**: Handles all business logic and API interactions
+- **Component Props**: Clean interfaces between UI and data layers
+- **Mock Data**: Development-ready with realistic content for testing
 
-### Performance Metrics Available:
-- **Vercel Speed Insights**: Real-time performance monitoring active
-- **Component Loading**: Lazy loading implemented for optimal bundle splitting
-- **Baseline Established**: Pre-refactoring metrics captured for comparison
+## Development Features
 
-The frontend architecture is now backend-ready with clear component boundaries, documented data requirements, and performance optimization infrastructure in place.
+### Performance Monitoring
+- **Vercel Speed Insights**: Integrated performance tracking
+- **Build Optimization**: Tree shaking and bundle analysis
+- **Component Profiling**: React DevTools integration for performance debugging
+
+### Code Quality
+- **TypeScript Strict Mode**: Full type coverage across components and services
+- **Component Documentation**: Inline comments and prop interface definitions
+- **Consistent Patterns**: Standardized component structure and naming conventions
+
+### Development Workflow
+- **Hot Reload**: Fast development iteration with Next.js dev server
+- **Component Isolation**: Modular architecture for independent development
+- **Mock Services**: Frontend development without backend dependencies
+
+## Deployment Configuration
+
+### Vercel Integration
+- **Automatic Deployments**: Git-based deployment pipeline
+- **Environment Variables**: Secure configuration management
+- **Performance Analytics**: Real-time monitoring and optimization insights
+
+### Build Process
+- **Static Generation**: Pre-rendered pages for optimal performance
+- **API Routes**: Server-side functionality within Next.js framework
+- **Asset Optimization**: Automatic image and bundle optimization
+
+This architecture provides a scalable, maintainable foundation for the MedCamps platform with clear separation of concerns, performance optimization, and comprehensive content management capabilities.
