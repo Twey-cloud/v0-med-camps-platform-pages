@@ -265,9 +265,10 @@ export default function MedCampsProductHub() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Interview Platforms</h2>
             <p className="text-lg text-gray-600">
-              Developed alongside professionals who have walked these career paths, learn from experts and smash your interviews. 
-
-At a fraction of the cost of a 1-to-1 tutor, you can use our platforms to access expert-made videos, textbook notes, practice questions, and mock interviews, powered by an AI examiner - allowing you to practice for your interviews on your own!
+              Developed alongside professionals who have walked these career paths, learn from experts and smash your
+              interviews. At a fraction of the cost of a 1-to-1 tutor, you can use our platforms to access expert-made
+              videos, textbook notes, practice questions, and mock interviews, powered by an AI examiner - allowing you
+              to practice for your interviews on your own!
             </p>
           </div>
 
@@ -321,16 +322,18 @@ At a fraction of the cost of a 1-to-1 tutor, you can use our platforms to access
                     <p className="mb-6 text-sm opacity-90">{platform.description}</p>
 
                     {/* Pricing */}
-                    <div className="mb-6 bg-white/10 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm">Monthly Access</span>
-                        <span className="font-bold text-lg">{formatPrice(34.99)}</span>
+                    {!isSubscribed && (
+                      <div className="mb-6 bg-white/10 rounded-lg p-4">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm">Monthly Access</span>
+                          <span className="font-bold text-lg">{formatPrice(34.99)}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Weekly Access</span>
+                          <span className="font-bold text-lg">{formatPrice(19.99)}</span>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">Weekly Access</span>
-                        <span className="font-bold text-lg">{formatPrice(19.99)}</span>
-                      </div>
-                    </div>
+                    )}
 
                     {renderUserActions(platform.id)}
                   </div>
