@@ -2,9 +2,10 @@
 
 import { Card } from "@/components/ui/card"
 import { Lock } from "lucide-react"
-import { useState } from "react"
-import type { UserState, Currency } from "@/lib/types"
-import { CURRENCIES, INTERVIEW_PLATFORMS, COMING_SOON_PLATFORMS, BRAND_COLORS } from "@/lib/constants"
+import { useCurrency } from "@/hooks/useCurrency"
+import { useUserState } from "@/hooks/useUserState"
+import { BRAND_COLORS } from "@/lib/constants"
+import { INTERVIEW_PLATFORMS, COMING_SOON_PLATFORMS } from "@/data/platforms"
 import { Header } from "@/components/Header"
 import { CurrencySelector } from "@/components/CurrencySelector"
 import { ProductCard } from "@/components/ProductCard"
@@ -12,37 +13,18 @@ import { UserStateDemo } from "@/components/UserStateDemo"
 import { Footer } from "@/components/Footer"
 
 export default function MedCampsProductHub() {
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("GBP")
-  const [userState, setUserState] = useState<UserState>("anonymous")
-  const [subscribedProduct, setSubscribedProduct] = useState<string | null>(null)
+  const { selectedCurrency, setSelectedCurrency, convertPrice, availableCurrencies } = useCurrency()
+  const { userState, subscribedProduct, signIn, signOut, subscribe, setUserState, setSubscribedProduct } =
+    useUserState()
 
-  const currentCurrency: Currency = CURRENCIES.find((c) => c.code === selectedCurrency) || CURRENCIES[0]
-
-  const formatPrice = (gbpPrice: number): string => {
-    const convertedPrice = gbpPrice * currentCurrency.rate
-    return `${currentCurrency.symbol}${convertedPrice.toFixed(2)}`
-  }
-
-  const handleSignIn = () => setUserState("authenticated")
-
-  const handleSignOut = () => {
-    setUserState("anonymous")
-    setSubscribedProduct(null)
-  }
-
-  const handleSubscribe = (productId: string) => {
-    setUserState("subscribed")
-    setSubscribedProduct(productId)
-  }
-
-  const handleStateChange = (state: UserState, product?: string | null) => {
+  const handleStateChange = (state: typeof userState, product?: string | null) => {
     setUserState(state)
     setSubscribedProduct(product || null)
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <Header userState={userState} onSignIn={handleSignIn} onSignOut={handleSignOut} />
+      <Header userState={userState} onSignIn={signIn} onSignOut={signOut} />
 
       <section className="px-6 py-12" style={{ backgroundColor: BRAND_COLORS.background }}>
         <div className="max-w-7xl mx-auto text-center">
@@ -55,7 +37,13 @@ export default function MedCampsProductHub() {
             </p>
           </div>
 
-          <CurrencySelector selectedCurrency={selectedCurrency} onCurrencyChange={setSelectedCurrency} />
+          <CurrencySelector
+            selectedCurrency={selectedCurrency.code}
+            onCurrencyChange={(code) => {
+              const currency = availableCurrencies.find((c) => c.code === code)
+              if (currency) setSelectedCurrency(currency)
+            }}
+          />
         </div>
       </section>
 
@@ -78,8 +66,8 @@ export default function MedCampsProductHub() {
                 platform={platform}
                 userState={userState}
                 subscribedProduct={subscribedProduct}
-                formatPrice={formatPrice}
-                onSubscribe={handleSubscribe}
+                formatPrice={convertPrice}
+                onSubscribe={subscribe}
               />
             ))}
           </div>
@@ -96,14 +84,14 @@ export default function MedCampsProductHub() {
                 <div className="h-48 relative overflow-hidden">
                   <img
                     src={platform.image || "/placeholder.svg"}
-                    alt={`${platform.name} preparation`}
+                    alt={`${platform.title} preparation`}
                     className="w-full h-full object-cover opacity-30 grayscale"
                   />
                   <div className="absolute inset-0 bg-gray-800/60" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center text-white">
                       <Lock className="w-12 h-12 mx-auto mb-4" />
-                      <h3 className="text-2xl font-bold mb-2">{platform.name}</h3>
+                      <h3 className="text-2xl font-bold mb-2">{platform.title}</h3>
                       <p className="text-sm opacity-80">Coming Soon!</p>
                     </div>
                   </div>

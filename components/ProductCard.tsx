@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card"
 import { ArrowRight } from "lucide-react"
 import type { UserState, Platform } from "@/lib/types"
 import { BRAND_COLORS, PRICING } from "@/lib/constants"
+import { getUserActionText, getUserSecondaryText, shouldShowPricing } from "@/utils/userActions"
 
 interface ProductCardProps {
   platform: Platform
@@ -15,62 +16,64 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ platform, userState, subscribedProduct, formatPrice, onSubscribe }: ProductCardProps) {
-  const Icon = platform.icon
   const isSubscribed = userState === "subscribed" && subscribedProduct === platform.id
+  const showPricing = shouldShowPricing(userState, isSubscribed)
+  const actionText = getUserActionText(userState, isSubscribed)
+  const secondaryText = getUserSecondaryText(userState)
 
   const renderUserActions = () => {
     if (userState === "anonymous") {
       return (
         <div className="space-y-3">
-          <Button
-            className={`w-full bg-[${BRAND_COLORS.secondary}] hover:bg-[${BRAND_COLORS.secondary}]/90 text-white`}
-          >
+          <Button className="w-full text-white" style={{ backgroundColor: BRAND_COLORS.secondary }}>
             Free Demo
           </Button>
           <Button variant="outline" className="w-full border-white text-white hover:bg-white/10 bg-transparent">
-            Sign Up
+            {actionText}
           </Button>
-          <p className="text-center text-sm text-white/80">
-            Already have an account? <button className="underline hover:text-white">Sign in</button>
-          </p>
+          {secondaryText && (
+            <p className="text-center text-sm text-white/80">
+              {secondaryText.split("?")[0]}?{" "}
+              <button className="underline hover:text-white">{secondaryText.split("?")[1]}</button>
+            </p>
+          )}
         </div>
       )
-    } else if (userState === "authenticated" && subscribedProduct !== platform.id) {
+    } else if (userState === "authenticated" && !isSubscribed) {
       return (
         <div className="space-y-3">
-          <Button
-            className={`w-full bg-[${BRAND_COLORS.secondary}] hover:bg-[${BRAND_COLORS.secondary}]/90 text-white`}
-          >
+          <Button className="w-full text-white" style={{ backgroundColor: BRAND_COLORS.secondary }}>
             Free Demo
           </Button>
           <Button
             onClick={() => onSubscribe(platform.id)}
-            className={`w-full bg-white text-[${BRAND_COLORS.primary}] hover:bg-white/90 font-semibold`}
+            className="w-full bg-white hover:bg-white/90 font-semibold"
+            style={{ color: BRAND_COLORS.primary }}
           >
-            Subscribe
+            {actionText}
           </Button>
         </div>
       )
-    } else if (userState === "subscribed" && subscribedProduct === platform.id) {
+    } else if (isSubscribed) {
       return (
         <Button
-          className={`w-full bg-white text-[${BRAND_COLORS.primary}] hover:bg-white/90 font-semibold flex items-center justify-center gap-2`}
+          className="w-full bg-white hover:bg-white/90 font-semibold flex items-center justify-center gap-2"
+          style={{ color: BRAND_COLORS.primary }}
         >
-          Go to Platform
+          {actionText}
           <ArrowRight className="w-4 h-4" />
         </Button>
       )
     } else {
       return (
         <div className="space-y-3">
-          <Button
-            className={`w-full bg-[${BRAND_COLORS.secondary}] hover:bg-[${BRAND_COLORS.secondary}]/90 text-white`}
-          >
+          <Button className="w-full text-white" style={{ backgroundColor: BRAND_COLORS.secondary }}>
             Free Demo
           </Button>
           <Button
             onClick={() => onSubscribe(platform.id)}
-            className={`w-full bg-white text-[${BRAND_COLORS.primary}] hover:bg-white/90 font-semibold`}
+            className="w-full bg-white hover:bg-white/90 font-semibold"
+            style={{ color: BRAND_COLORS.primary }}
           >
             Subscribe
           </Button>
@@ -81,7 +84,8 @@ export function ProductCard({ platform, userState, subscribedProduct, formatPric
 
   return (
     <Card
-      className={`bg-[${BRAND_COLORS.primary}] text-white overflow-hidden relative group hover:scale-105 transition-transform duration-300`}
+      className="text-white overflow-hidden relative group hover:scale-105 transition-transform duration-300"
+      style={{ backgroundColor: BRAND_COLORS.primary }}
     >
       <div
         className="absolute inset-0 opacity-[0.49]"
@@ -96,7 +100,7 @@ export function ProductCard({ platform, userState, subscribedProduct, formatPric
       <div className="h-48 relative overflow-hidden">
         <img
           src={platform.image || "/placeholder.svg"}
-          alt={`${platform.name} interview preparation`}
+          alt={`${platform.title} interview preparation`}
           className="w-full h-full object-cover"
         />
         {isSubscribed && (
@@ -107,23 +111,13 @@ export function ProductCard({ platform, userState, subscribedProduct, formatPric
       </div>
 
       <div className="p-6 relative z-10">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <Icon className="w-6 h-6" />
-            <div>
-              <h3 className="text-xl font-bold">{platform.name}</h3>
-              <div className="flex items-center gap-2 text-sm opacity-80">
-                <span>{platform.flag}</span>
-                <span>{platform.country}</span>
-              </div>
-            </div>
-          </div>
+        <div className="mb-4">
+          <h3 className="text-xl font-bold mb-2">{platform.title}</h3>
         </div>
 
         <p className="mb-6 text-sm opacity-90">{platform.description}</p>
 
-        {/* Pricing - hidden for subscribed users on their platform */}
-        {!isSubscribed && (
+        {showPricing && (
           <div className="mb-6 bg-white/10 rounded-lg p-4">
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm">Monthly Access</span>
