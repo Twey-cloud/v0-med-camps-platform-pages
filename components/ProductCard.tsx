@@ -1,5 +1,5 @@
 "use client"
-
+// This entire file should be renamed using UI conditional rendering from the larger brownfield medcamps project - according to @docs/architecture/user-access-tiers.md . 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ArrowRight } from "lucide-react"
