@@ -2,107 +2,42 @@
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { CheckCircle, Clock, Stethoscope, Heart, Zap, Lock, ChevronDown, Globe, ArrowRight } from "lucide-react"
+import { CheckCircle, Clock, Lock, ChevronDown, Globe, ArrowRight } from "lucide-react"
 import { useState } from "react"
+import type { UserState, Currency } from "@/lib/types"
+import {
+  CURRENCIES,
+  INTERVIEW_PLATFORMS,
+  COMING_SOON_PLATFORMS,
+  PRICING,
+  BRAND_COLORS,
+  NAV_LINKS,
+  FOOTER_LINKS,
+  SUPPORTED_COUNTRIES,
+} from "@/lib/constants"
 
 export default function MedCampsProductHub() {
-  const [selectedCurrency, setSelectedCurrency] = useState("GBP")
-  const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false)
-  const [userState, setUserState] = useState<"anonymous" | "authenticated" | "subscribed">("anonymous")
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("GBP")
+  const [showCurrencyDropdown, setShowCurrencyDropdown] = useState<boolean>(false)
+  const [userState, setUserState] = useState<UserState>("anonymous")
   const [subscribedProduct, setSubscribedProduct] = useState<string | null>(null)
 
-  const currencies = [
-    { code: "GBP", symbol: "£", name: "British Pound", flag: "🇬🇧", rate: 1 },
-    { code: "USD", symbol: "$", name: "US Dollar", flag: "🇺🇸", rate: 1.27 },
-    { code: "AUD", symbol: "A$", name: "Australian Dollar", flag: "🇦🇺", rate: 1.91 },
-    { code: "EUR", symbol: "€", name: "Euro", flag: "🇪🇺", rate: 1.18 },
-  ]
+  const currentCurrency: Currency = CURRENCIES.find((c) => c.code === selectedCurrency) || CURRENCIES[0]
 
-  const currentCurrency = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
-
-  const formatPrice = (gbpPrice: number) => {
+  const formatPrice = (gbpPrice: number): string => {
     const convertedPrice = gbpPrice * currentCurrency.rate
     return `${currentCurrency.symbol}${convertedPrice.toFixed(2)}`
   }
-
-  const interviewPlatforms = [
-    {
-      id: "uk-medicine",
-      name: "UK Medicine",
-      country: "United Kingdom",
-      flag: "🇬🇧",
-      icon: Stethoscope,
-      description: "Comprehensive interview preparation for UK medical school applications",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/What-is-a-GP-scaled.jpg-3SawCtY4Ns0kjLtAtGKlraUy7mQhCX.jpeg",
-      available: true,
-    },
-    {
-      id: "uk-dentistry",
-      name: "UK Dentistry",
-      country: "United Kingdom",
-      flag: "🇬🇧",
-      icon: Heart,
-      description: "Specialised interview training for UK dental school admissions",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/s960_dentist_performing_check_up_on_patient.jpg-Uaqbbi3MUzrnxLK9I0yllenfXzRcn6.jpeg",
-      available: true,
-    },
-    {
-      id: "uk-veterinary",
-      name: "UK Veterinary Medicine",
-      country: "United Kingdom",
-      flag: "🇬🇧",
-      icon: Zap,
-      description: "Expert preparation for UK veterinary medicine interviews",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/28565-veterinary-medicine-and-bioveterinary-sciences-2021.x5f0d7d0b-MZ6Fiaa5zdpK7joSLzgSzMP82EfauS.webp",
-      available: true,
-    },
-    {
-      id: "aus-medicine",
-      name: "AUS Medicine",
-      country: "Australia",
-      flag: "🇦🇺",
-      icon: Stethoscope,
-      description: "Tailored interview preparation for Australian medical schools",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/2022.03.22-231281-rpa-bone-and-soft-tissue-sarcoma-unit-prospectus-alx-dsc01563.jpg-OM8iZIroUlY6tk0gjq8AOH3BQNGRwa.jpeg",
-      available: true,
-    },
-    {
-      id: "us-medicine",
-      name: "US Medicine",
-      country: "United States",
-      flag: "🇺🇸",
-      icon: Stethoscope,
-      description: "Comprehensive preparation for US medical school interviews",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/HMM-2012-SS-029-8K9EEsDSf6N8vQqmT4RjMmBarPkLVq.jpeg",
-      available: true,
-    },
-  ]
-
-  const comingSoonPlatforms = [
-    {
-      id: "ucat",
-      name: "UCAT",
-      description: "University Clinical Aptitude Test preparation platform",
-      image: "/smiling-medical-student.png",
-    },
-    {
-      id: "gamsat",
-      name: "GAMSAT",
-      description: "Graduate Medical School Admissions Test preparation",
-      image: "/chemistry-molecular-structure.png",
-    },
-  ]
 
   const renderUserActions = (productId: string) => {
     if (userState === "anonymous") {
       return (
         <div className="space-y-3">
-          <Button className="w-full bg-[#1696c4] hover:bg-[#1696c4]/90 text-white">Free Demo</Button>
+          <Button
+            className={`w-full bg-[${BRAND_COLORS.secondary}] hover:bg-[${BRAND_COLORS.secondary}]/90 text-white`}
+          >
+            Free Demo
+          </Button>
           <Button variant="outline" className="w-full border-white text-white hover:bg-white/10 bg-transparent">
             Sign Up
           </Button>
@@ -117,13 +52,17 @@ export default function MedCampsProductHub() {
     } else if (userState === "authenticated" && subscribedProduct !== productId) {
       return (
         <div className="space-y-3">
-          <Button className="w-full bg-[#1696c4] hover:bg-[#1696c4]/90 text-white">Free Demo</Button>
+          <Button
+            className={`w-full bg-[${BRAND_COLORS.secondary}] hover:bg-[${BRAND_COLORS.secondary}]/90 text-white`}
+          >
+            Free Demo
+          </Button>
           <Button
             onClick={() => {
               setUserState("subscribed")
               setSubscribedProduct(productId)
             }}
-            className="w-full bg-white text-[#028156] hover:bg-white/90 font-semibold"
+            className={`w-full bg-white text-[${BRAND_COLORS.primary}] hover:bg-white/90 font-semibold`}
           >
             Subscribe
           </Button>
@@ -131,7 +70,9 @@ export default function MedCampsProductHub() {
       )
     } else if (userState === "subscribed" && subscribedProduct === productId) {
       return (
-        <Button className="w-full bg-white text-[#028156] hover:bg-white/90 font-semibold flex items-center justify-center gap-2">
+        <Button
+          className={`w-full bg-white text-[${BRAND_COLORS.primary}] hover:bg-white/90 font-semibold flex items-center justify-center gap-2`}
+        >
           Go to Platform
           <ArrowRight className="w-4 h-4" />
         </Button>
@@ -139,13 +80,17 @@ export default function MedCampsProductHub() {
     } else {
       return (
         <div className="space-y-3">
-          <Button className="w-full bg-[#1696c4] hover:bg-[#1696c4]/90 text-white">Free Demo</Button>
+          <Button
+            className={`w-full bg-[${BRAND_COLORS.secondary}] hover:bg-[${BRAND_COLORS.secondary}]/90 text-white`}
+          >
+            Free Demo
+          </Button>
           <Button
             onClick={() => {
               setUserState("subscribed")
               setSubscribedProduct(productId)
             }}
-            className="w-full bg-white text-[#028156] hover:bg-white/90 font-semibold"
+            className={`w-full bg-white text-[${BRAND_COLORS.primary}] hover:bg-white/90 font-semibold`}
           >
             Subscribe
           </Button>
@@ -158,7 +103,7 @@ export default function MedCampsProductHub() {
     <div className="min-h-screen bg-background">
       {/* Header - Medical-themed navigation with user authentication states */}
       <header
-        className="bg-[#028156] text-white px-6 relative py-5"
+        className={`bg-[${BRAND_COLORS.primary}] text-white px-6 relative py-5`}
         style={{
           backgroundImage: `url('/medical-wallpaper.png')`,
           backgroundSize: "cover",
@@ -175,15 +120,15 @@ export default function MedCampsProductHub() {
 
           {/* Navigation menu - hidden on mobile, visible on desktop for better UX */}
           <nav className="hidden md:flex items-center gap-8 font-semibold text-lg">
-            <a href="/about" className="opacity-60 hover:opacity-100 transition-opacity duration-200">
-              About Us
-            </a>
-            <a href="/contact" className="opacity-60 hover:opacity-100 transition-opacity duration-200">
-              Contact Us
-            </a>
-            <a href="/work-with-us" className="opacity-60 hover:opacity-100 transition-opacity duration-200">
-              Work with us
-            </a>
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="opacity-60 hover:opacity-100 transition-opacity duration-200"
+              >
+                {link.label}
+              </a>
+            ))}
           </nav>
 
           {/* Authentication section - dynamically shows sign in/out based on user state */}
@@ -191,7 +136,7 @@ export default function MedCampsProductHub() {
             {userState === "anonymous" ? (
               <Button
                 onClick={() => setUserState("authenticated")}
-                className="bg-[#1696c4] hover:bg-[#1696c4]/90 text-white px-[29px] font-semibold text-base"
+                className={`bg-[${BRAND_COLORS.secondary}] hover:bg-[${BRAND_COLORS.secondary}]/90 text-white px-[29px] font-semibold text-base`}
               >
                 Sign in
               </Button>
@@ -214,7 +159,7 @@ export default function MedCampsProductHub() {
         </div>
       </header>
 
-      <section className="px-6 py-12" style={{ backgroundColor: "rgba(255, 165, 0, 0.02)" }}>
+      <section className="px-6 py-12" style={{ backgroundColor: BRAND_COLORS.background }}>
         <div className="max-w-7xl mx-auto text-center">
           <div className="mb-8">
             <img src="/medcamps-hero-logo.png" alt="MedCamps" className="h-20 mx-auto mb-6" />
@@ -239,7 +184,7 @@ export default function MedCampsProductHub() {
               </button>
               {showCurrencyDropdown && (
                 <div className="absolute top-full mt-2 left-0 bg-white rounded-lg shadow-lg border border-gray-200 py-2 min-w-[200px] z-20">
-                  {currencies.map((currency) => (
+                  {CURRENCIES.map((currency) => (
                     <button
                       key={currency.code}
                       onClick={() => {
@@ -275,14 +220,14 @@ export default function MedCampsProductHub() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {interviewPlatforms.map((platform) => {
+            {INTERVIEW_PLATFORMS.map((platform) => {
               const Icon = platform.icon
               const isSubscribed = userState === "subscribed" && subscribedProduct === platform.id
 
               return (
                 <Card
                   key={platform.id}
-                  className="bg-[#028156] text-white overflow-hidden relative group hover:scale-105 transition-transform duration-300"
+                  className={`bg-[${BRAND_COLORS.primary}] text-white overflow-hidden relative group hover:scale-105 transition-transform duration-300`}
                 >
                   <div
                     className="absolute inset-0 opacity-[0.49]"
@@ -323,16 +268,16 @@ export default function MedCampsProductHub() {
 
                     <p className="mb-6 text-sm opacity-90">{platform.description}</p>
 
-                    {/* Pricing */}
+                    {/* Pricing - Using PRICING constants */}
                     {!isSubscribed && (
                       <div className="mb-6 bg-white/10 rounded-lg p-4">
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-sm">Monthly Access</span>
-                          <span className="font-bold text-lg">{formatPrice(34.99)}</span>
+                          <span className="font-bold text-lg">{formatPrice(PRICING.monthly)}</span>
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-sm">Weekly Access</span>
-                          <span className="font-bold text-lg">{formatPrice(19.99)}</span>
+                          <span className="font-bold text-lg">{formatPrice(PRICING.weekly)}</span>
                         </div>
                       </div>
                     )}
@@ -351,7 +296,7 @@ export default function MedCampsProductHub() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {comingSoonPlatforms.map((platform) => (
+            {COMING_SOON_PLATFORMS.map((platform) => (
               <Card key={platform.id} className="bg-gray-100 overflow-hidden relative">
                 <div className="h-48 relative overflow-hidden">
                   <img
@@ -429,8 +374,8 @@ export default function MedCampsProductHub() {
         </div>
       </section>
 
-      {/* Footer - keeping existing */}
-      <footer className="bg-[#028156] text-white py-16 px-6">
+      {/* Footer - keeping existing structure with constants */}
+      <footer className={`bg-[${BRAND_COLORS.primary}] text-white py-16 px-6`}>
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             {/* Logo and Brand */}
@@ -444,13 +389,10 @@ export default function MedCampsProductHub() {
               </p>
               <div className="flex items-center gap-4">
                 <div className="bg-white/10 p-2 rounded-lg">
-                  <Stethoscope className="w-5 h-5" />
+                  <CheckCircle className="w-5 h-5" />
                 </div>
                 <div className="bg-white/10 p-2 rounded-lg">
-                  <Heart className="w-5 h-5" />
-                </div>
-                <div className="bg-white/10 p-2 rounded-lg">
-                  <Zap className="w-5 h-5" />
+                  <Clock className="w-5 h-5" />
                 </div>
               </div>
             </div>
@@ -459,26 +401,13 @@ export default function MedCampsProductHub() {
             <div>
               <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
               <ul className="space-y-3 text-white/80">
-                <li>
-                  <a href="/about" className="hover:text-white transition-colors">
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a href="/contact" className="hover:text-white transition-colors">
-                    Contact Us
-                  </a>
-                </li>
-                <li>
-                  <a href="/work-with-us" className="hover:text-white transition-colors">
-                    Work with us
-                  </a>
-                </li>
-                <li>
-                  <a href="/privacy" className="hover:text-white transition-colors">
-                    Privacy Policy
-                  </a>
-                </li>
+                {FOOTER_LINKS.map((link) => (
+                  <li key={link.href}>
+                    <a href={link.href} className="hover:text-white transition-colors">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -506,9 +435,11 @@ export default function MedCampsProductHub() {
           <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-white/60 text-sm">© 2024 MedCamps. All rights reserved.</p>
             <div className="flex items-center gap-6 text-sm text-white/60">
-              <span>🇬🇧 UK</span>
-              <span>🇦🇺 Australia</span>
-              <span>🇺🇸 United States</span>
+              {SUPPORTED_COUNTRIES.map((country) => (
+                <span key={country.name}>
+                  {country.flag} {country.name}
+                </span>
+              ))}
             </div>
           </div>
         </div>
