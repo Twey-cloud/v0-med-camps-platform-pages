@@ -39,7 +39,7 @@ This document outlines the comprehensive refactoring of the MedCamps Product Hub
 **Objective**: Break down monolithic component into reusable, focused components
 
 **Components to Extract**:
-1. `Header` - Navigation and authentication UI
+1. `Header` - Navigation and authentication UI - need the supabase auth to be implemented here. 
 2. `ProductCard` - Reusable platform card component
 3. `CurrencySelector` - Currency selection dropdown
 4. `UserStateDemo` - Development testing component
