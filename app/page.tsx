@@ -156,7 +156,7 @@ export default function MedCampsProductHub() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header - keeping existing */}
+      {/* Header - Medical-themed navigation with user authentication states */}
       <header
         className="bg-[#028156] text-white px-6 relative py-5"
         style={{
@@ -166,12 +166,14 @@ export default function MedCampsProductHub() {
         }}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between relative z-10">
+          {/* Logo section - clickable brand identity */}
           <div className="flex items-center">
             <a href="/" className="hover:opacity-80 transition-opacity duration-200">
               <img src="/medcamps-navbar-logo.svg" alt="MedCamps" className="h-16 w-auto" />
             </a>
           </div>
 
+          {/* Navigation menu - hidden on mobile, visible on desktop for better UX */}
           <nav className="hidden md:flex items-center gap-8 font-semibold text-lg">
             <a href="/about" className="opacity-60 hover:opacity-100 transition-opacity duration-200">
               About Us
@@ -184,6 +186,7 @@ export default function MedCampsProductHub() {
             </a>
           </nav>
 
+          {/* Authentication section - dynamically shows sign in/out based on user state */}
           <div className="flex items-center gap-4">
             {userState === "anonymous" ? (
               <Button
@@ -200,9 +203,8 @@ export default function MedCampsProductHub() {
                     setUserState("anonymous")
                     setSubscribedProduct(null)
                   }}
-                  variant="outline"
                   size="sm"
-                  className="border-white/20 text-white hover:bg-white/10"
+                  className="bg-white/20 text-white hover:bg-white/30 border border-white/30"
                 >
                   Sign out
                 </Button>
