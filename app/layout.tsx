@@ -4,12 +4,10 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
-import { Sidebar } from "@/components/sidebar"
-import { MobileBlocker } from "@/components/MobileBlocker"
 
 export const metadata: Metadata = {
-  title: "MedCamps - GAMSAT Preparation Platform",
-  description: "Comprehensive GAMSAT preparation platform",
+  title: "MedCamps - UCAT Arena",
+  description: "MedCamps UCAT Arena - Practice and prepare for your UCAT exam",
   generator: "v0.app",
 }
 
@@ -30,11 +28,7 @@ html {
         `}</style>
       </head>
       <body>
-        <MobileBlocker />
-        <div className="flex h-screen bg-gray-50">
-          <Sidebar />
-          <main className="flex-1 overflow-auto pt-16 md:pt-0">{children}</main>
-        </div>
+        {children}
         <SpeedInsights />
       </body>
     </html>
