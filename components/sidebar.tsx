@@ -3,16 +3,16 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, BookOpen, FileQuestion, BarChart3, User, Video, Settings, Menu, X } from "lucide-react"
+import { Home, Trophy, User, ClipboardList, Zap, BookOpen, Menu, X } from "lucide-react"
 import { useState, useEffect } from "react"
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "Learning", href: "/learning", icon: BookOpen },
-  { name: "Practice", href: "/practice", icon: FileQuestion },
-  { name: "Mock Interview", href: "/mock-interview", icon: Video },
-  { name: "Performance", href: "/performance", icon: BarChart3 },
-  { name: "Admin", href: "/admin", icon: Settings },
+  { name: "Lobby", href: "/", icon: Home },
+  { name: "Leaderboard", href: "/leaderboard", icon: Trophy },
+  { name: "Profile", href: "/profile", icon: User },
+  { name: "Mock Exams", href: "/mock-exams", icon: ClipboardList },
+  { name: "Speed Trainer", href: "/speed-trainer", icon: Zap },
+  { name: "Dojo", href: "/dojo", icon: BookOpen },
 ]
 
 export function Sidebar() {
@@ -43,11 +43,14 @@ export function Sidebar() {
         {/* Mobile menu button */}
         <div className="fixed top-0 left-0 right-0 z-50 bg-emerald-800 px-4 py-3 md:hidden">
           <div className="flex items-center justify-between">
-            <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design-xtW6DJG22oopkP1mifyHakaW5g1QCw.svg"
-              alt="MedCamps"
-              className="h-8 w-auto"
-            />
+            <div className="flex items-center gap-2">
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design-xtW6DJG22oopkP1mifyHakaW5g1QCw.svg"
+                alt="MedCamps"
+                className="h-8 w-auto"
+              />
+              <span className="text-sm font-bold text-blue-200">UCAT Arena</span>
+            </div>
             <button
               onClick={toggleMobileMenu}
               className="text-white hover:bg-emerald-700 p-2 rounded-lg transition-colors"
@@ -64,9 +67,6 @@ export function Sidebar() {
             <div className="fixed left-0 top-0 h-full w-64 bg-emerald-800 pt-16">
               {/* Navigation */}
               <nav className="flex-1 space-y-1 px-4 py-6">
-                <div className="mb-4">
-                  <p className="italic px-3 mb-2 text-sm font-light text-slate-300">Medicine Interviews - UK</p>
-                </div>
                 {navigation.map((item) => {
                   const isActive = pathname === item.href
                   return (
@@ -113,20 +113,18 @@ export function Sidebar() {
 
   return (
     <div className="hidden md:flex h-screen w-64 flex-col bg-emerald-800">
-      {/* Logo */}
-      <div className="flex h-24 items-center justify-center border-b border-emerald-700 px-6">
+      {/* Logo & UCAT Arena branding */}
+      <div className="flex flex-col items-center border-b border-emerald-700 px-6 py-4">
         <img
           src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design-xtW6DJG22oopkP1mifyHakaW5g1QCw.svg"
           alt="MedCamps"
-          className="h-24 w-auto"
+          className="h-20 w-auto"
         />
+        <span className="text-lg font-bold text-blue-300 tracking-wide mt-1">UCAT Arena</span>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-4 py-6">
-        <div className="mb-4">
-          <p className="italic px-3 mb-2 text-sm font-light text-slate-300">Medicine Interviews - UK</p>
-        </div>
         {navigation.map((item) => {
           const isActive = pathname === item.href
           return (
